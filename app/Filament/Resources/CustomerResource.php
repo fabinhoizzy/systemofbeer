@@ -26,23 +26,31 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('user_id')
+                /*Select::make('user_id')
                     ->label('Usuário')
                     ->searchable()
                     ->relationship('user', 'name')
-                    ->required(),
+                    ->required(),*/
+
+                Forms\Components\TextInput::make('name')
+                    ->label('Nome Completo')
+                    ->required()
+                    ->maxLength(255),
 
                 Forms\Components\TextInput::make('document')
                     ->label('Documento')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DatePicker::make('birthdate')
-                    ->label('Data Nascimento')
-                    ->required(),
+
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
+
+                Forms\Components\DatePicker::make('birthdate')
+                    ->label('Data Nascimento')
+                    ->required(),
+
                 Forms\Components\TextInput::make('mobile')
                     ->label('Celular')
                     ->required()
