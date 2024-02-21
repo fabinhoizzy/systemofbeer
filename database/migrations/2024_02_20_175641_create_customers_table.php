@@ -14,17 +14,17 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
 
-            $table->foreign('user_id')
+            $table->foreignId('user_id')
                 ->index()
                 ->constrained()
                 ->cascadeOnDelete();
 
             $table->string('name');
             $table->string('document');
-            $table->unsignedBigInteger('age');
+            $table->date('birthdate');
             $table->string('email')->index()->unique();
             $table->string('mobile');
-            
+
             $table->timestamps();
         });
     }

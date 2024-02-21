@@ -8,6 +8,7 @@ use App\Enums\PanelTypeEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -61,8 +62,8 @@ class User extends Authenticatable implements FilamentUser
         return false;
     }
 
-    public function customer(): HasOne
+    public function customer(): BelongsTo
     {
-        return $this->hasOne(Customer::class);
+        return $this->belongsTo(Customer::class);
     }
 }

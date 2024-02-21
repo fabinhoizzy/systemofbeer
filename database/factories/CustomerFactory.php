@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,15 @@ class CustomerFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = \Faker\Factory::create('pt_BR');
+
         return [
-            //
+            'user_id' => User::all()->random()->id,
+            'name' => $faker->name,
+            'document' => $faker->cpf,
+            'birthdate' => now()->subYear(25)->format('Y-m-d') ,
+            'email' => $faker->safeEmail,
+            'mobile' => '(61) ' . $faker->cellphone,
         ];
     }
 }
