@@ -1,16 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Filament\Pages\Auth;
 
+use App\Models\Customer;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use Filament\Events\Auth\Registered;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Http\Responses\Auth\Contracts\RegistrationResponse;
 use Filament\Notifications\Notification;
 use Filament\Pages\Auth\Register;
+use Illuminate\Support\Str;
 
 class ControlRegister extends Register
 {
@@ -36,26 +39,13 @@ class ControlRegister extends Register
                     ->email()
                     ->maxLength(255),
 
-                TextInput::make('password')
-                    ->label('Digite sua senha')
-                    ->required()
-                    ->password()
-                    ->maxLength(16),
-
-             /*   TextInput::make('password_confirmation')
-                    ->label('Confirme sua senha')
-                    ->required()
-                    ->password()
-                    ->confirmed()
-                    ->maxLength(16),*/
-
-                TextInput::make('phone')
+                TextInput::make('mobile')
                     ->label('Telefone/Whatsapp')
                     ->mask('(99) 9 9999-9999')
                     ->required()
                     ->maxLength(16),
 
-                DateTimePicker::make('birthdate')
+                DatePicker::make('birthdate')
                     ->label('Data de Nascimento')
                     ->required()
             ]);
@@ -97,21 +87,21 @@ class ControlRegister extends Register
             return null;
         }
 
-        $user = $this->getUserModel()::create($this->data);
+        Customer::create($this->data);
 
-        event(new Registered($user));
+        Notification::make()
+            ->title('Cadastro Realizado!')
+            ->body("Enviamos um email para {$this->data['email']} com seus dados de acesso")
+            ->success()
+            ->send();
 
-        $this->sendEmailVerificationNotification($user);
+        $this->reset();
 
-        Filament::auth()->login($user);
-
-        session()->regenerate();
-
-        return app(RegistrationResponse::class);
+        return null;
     }
 
     private function checkIfCustomerCanRegister(): bool
     {
-        return (now()->diffInDays($this->data['birthdate'])/ 365) >= 18;
+        return now()->parse($this->data['birthdate'])->age >= 18;
     }
 }
