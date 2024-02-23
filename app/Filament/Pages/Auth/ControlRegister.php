@@ -47,6 +47,7 @@ class ControlRegister extends Register
 
                 DatePicker::make('birthdate')
                     ->label('Data de Nascimento')
+                    ->format('d/m/Y')
                     ->required()
             ]);
 
