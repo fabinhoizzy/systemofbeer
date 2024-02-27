@@ -19,7 +19,7 @@ return new class extends Migration
                 ->constrained('products')
                 ->cascadeOnDelete();
 
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->unsignedInteger('quantity');
             $table->string('type')->default('sale');
             $table->timestamps();
