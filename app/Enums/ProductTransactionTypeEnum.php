@@ -17,5 +17,7 @@ enum ProductTransactionTypeEnum : string
             self::INVENTORY => 'inventory',
         };
     }
-
 }
+
+
+
